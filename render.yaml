@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: expensewise
+    runtime: docker
+    healthCheckPath: /
+    autoDeployTrigger: commit
+
+    # Persist the SQLite database between deploys
+    disk:
+      name: app-data
+      mountPath: /var/data
+      sizeGB: 1
+
+    envVars:
+      - key: DJANGO_DEBUG
+        value: "0"
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DJANGO_DB_PATH
+        value: /var/data/db.sqlite3
+
+      # Set these in the Render dashboard during the first Blueprint creation:
+      # - DJANGO_ALLOWED_HOSTS should include: <your-service>.onrender.com
+      # - DJANGO_CSRF_TRUSTED_ORIGINS should include: https://<your-service>.onrender.com
+      - key: DJANGO_ALLOWED_HOSTS
+        sync: false
+      - key: DJANGO_CSRF_TRUSTED_ORIGINS
+        sync: false

@@ -28,7 +28,7 @@ PY
 
 RUN pip install --upgrade pip \
     && pip install -r requirements.utf8.txt \
-    && pip install gunicorn
+  && pip install gunicorn whitenoise
 
 # Pre-download NLTK corpora used by the app.
 RUN python - <<'PY'
