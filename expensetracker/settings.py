@@ -30,15 +30,13 @@ SECRET_KEY = os.environ.get(
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DJANGO_DEBUG', '1').lower() in ('1', 'true', 'yes', 'on')
+DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
-_allowed_hosts = os.environ.get('DJANGO_ALLOWED_HOSTS', '')
-ALLOWED_HOSTS = [h.strip() for h in _allowed_hosts.split(',') if h.strip()] or (
+ALLOWED_HOSTS = [h.strip() for h in os.environ.get('ALLOWED_HOSTS', '').split(',') if h.strip()] or (
     ['localhost', '127.0.0.1', '[::1]'] if DEBUG else []
 )
 
-_csrf_trusted_origins = os.environ.get('DJANGO_CSRF_TRUSTED_ORIGINS', '')
-CSRF_TRUSTED_ORIGINS = [o.strip() for o in _csrf_trusted_origins.split(',') if o.strip()]
+CSRF_TRUSTED_ORIGINS = [o.strip() for o in os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',') if o.strip()]
 
 
 # Application definition
