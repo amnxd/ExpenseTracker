@@ -1,0 +1,36 @@
+services:
+  web:
+    build: .
+    environment:
+      DJANGO_DEBUG: "0"
+      DJANGO_DB_PATH: /data/db.sqlite3
+      # Set these in your .env on the VPS:
+      # DJANGO_SECRET_KEY=...
+      # DJANGO_ALLOWED_HOSTS=your-domain.com,your-vps-ip
+      # DJANGO_CSRF_TRUSTED_ORIGINS=https://your-domain.com
+    volumes:
+      - db_data:/data
+      - static_data:/app/staticfiles
+    restart: unless-stopped
+
+  caddy:
+    image: caddy:2
+    environment:
+      DOMAIN: ${DOMAIN:-:80}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - static_data:/srv/static:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - web
+    restart: unless-stopped
+
+volumes:
+  db_data:
+  static_data:
+  caddy_data:
+  caddy_config:

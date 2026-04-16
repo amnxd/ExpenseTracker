@@ -1,0 +1,66 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Django
+*.log
+local_settings.py
+
+# Database (SQLite)
+db.sqlite3
+*.sqlite3
+mydatabase
+mydatabase-journal
+*.db
+
+# Static files build output
+staticfiles/
+
+# Generated reports / exports
+weekly_report_*.xlsx
+monthly_report_*.xlsx
+
+# Generated plot (created at runtime by forecast)
+static/img/forecast_plot.png
+
+# Dependency/install artifacts
+pip-wheel-metadata/
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Test / coverage
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Linters / type checkers
+.mypy_cache/
+.ruff_cache/
+.pyright/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+Desktop.ini
+.vscode/
+.idea/
+
+# Environment variables / secrets
+.env
+.env.*
+
+# Convenience file (created when converting UTF-16 requirements)
+requirements.utf8.txt
