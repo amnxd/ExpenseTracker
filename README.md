@@ -41,18 +41,25 @@ python manage.py runserver
 
 ## Deploy to Render (no Docker, no YAML)
 
-Create a **Web Service** in Render from this repo and use these commands:
+Create a **Web Service** in Render from this repo.
+
+This repo includes:
+- `.python-version` (pins Python 3.11)
+- `requirements.render.txt` (clean dependency list for Render)
+- `render-build.sh` and `render-start.sh`
+
+Use these commands in Render:
 
 ### Build Command
 
 ```bash
-python -c "import pathlib; p=pathlib.Path('requirements.txt'); pathlib.Path('requirements.utf8.txt').write_text(p.read_text(encoding='utf-16'), encoding='utf-8')" && pip install -r requirements.utf8.txt && python -c "import nltk; nltk.download('stopwords'); nltk.download('punkt'); nltk.download('punkt_tab')"
+bash render-build.sh
 ```
 
 ### Start Command
 
 ```bash
-python manage.py migrate && python manage.py runserver 0.0.0.0:$PORT
+bash render-start.sh
 ```
 
 ### Environment variables on Render

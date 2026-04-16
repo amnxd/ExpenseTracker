@@ -44,25 +44,37 @@ class UpdateDataset(APIView):
     # permission_classes = [IsAuthenticated]
 
     def post(self, request):
-       new_data = request.data.get('new_data')
+       new_data = request.data.get('new_data') or {}
 
        if 'description' in new_data and 'category' in new_data:
             # Load your existing dataset
-            data = pd.read_csv('dataset.csv')  # Load the existing dataset
+            data = pd.read_csv('dataset.csv')
             new_category = new_data['category']
             new_description = new_data['description']
 
             # Append the new data to the dataset
-            new_row = {'description': new_description, 'category': new_category, 'clean_description': preprocess_text(new_description)}
+            new_row = {
+                'description': new_description,
+                'category': new_category,
+                'clean_description': preprocess_text(new_description),
+            }
             data = pd.concat([data, pd.DataFrame([new_row])], ignore_index=True)
+
             # Save the updated dataset
             data.to_csv('dataset.csv', index=False)
-            
-            tfidf_vectorizer = TfidfVectorizer()
 
-            # Retrain the model with the updated dataset
-            X = tfidf_vectorizer.transform(data['clean_description'])
+            # Retrain once to keep model pipeline valid.
+            tfidf_vectorizer = TfidfVectorizer()
+            X = tfidf_vectorizer.fit_transform(data['clean_description'])
+            model = RandomForestClassifier()
             model.fit(X, data['category'])
+
+            return Response({'message': 'Dataset updated successfully'}, status=status.HTTP_200_OK)
+
+       return Response(
+           {'error': 'new_data with description and category is required'},
+           status=status.HTTP_400_BAD_REQUEST,
+       )
 
 
 

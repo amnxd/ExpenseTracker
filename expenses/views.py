@@ -128,8 +128,12 @@ def add_expense(request):
             'category': predicted_category,
         }
 
-        update_url = 'http://127.0.0.1:8000/api/update-dataset/'
-        response = requests.post(update_url, json={'new_data': new_data})
+        update_url = request.build_absolute_uri('/api/update-dataset/')
+        try:
+            requests.post(update_url, json={'new_data': new_data}, timeout=5)
+        except requests.RequestException:
+            # Do not block expense creation if dataset sync fails.
+            pass
 
         try:
             date = datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
@@ -262,20 +266,6 @@ def expense_category_summary(request):
 @login_required(login_url='/authentication/login')
 def stats_view(request):
     return render(request, 'expenses/stats.html')
-
-@login_required(login_url='/authentication/login')
-def predict_category(description):
-    predict_category_url = 'http://localhost:8000/api/predict-category/'  # Use the correct URL path
-    data = {'description': description}
-    response = requests.post(predict_category_url, data=data)
-
-    if response.status_code == 200:
-        # Get the predicted category from the response
-        predicted_category = response.json().get('predicted_category')
-        return predicted_category
-    else:
-        # Handle the case where the prediction request failed
-        return None
     
 
 def set_expense_limit(request):

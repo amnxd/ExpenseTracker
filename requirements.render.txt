@@ -1,0 +1,11 @@
+Django==5.1.1
+djangorestframework==3.15.2
+nltk==3.9.1
+pandas==2.2.2
+scikit-learn==1.5.1
+statsmodels==0.14.2
+matplotlib==3.9.2
+requests==2.32.3
+openpyxl==3.1.5
+xhtml2pdf==0.2.16
+validate_email==1.3
