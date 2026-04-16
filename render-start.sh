@@ -11,4 +11,5 @@ fi
 PORT="${PORT:-8000}"
 
 "$PYTHON_BIN" manage.py migrate --noinput
+"$PYTHON_BIN" manage.py createsuperuser --noinput || echo "Superuser may already exist"
 exec "$PYTHON_BIN" manage.py runserver 0.0.0.0:${PORT}
